@@ -9,10 +9,16 @@
   min-height: 32px;
   font-weight: bold;
   display: inline-block;
-  transition: background-color .3s;
+  transition: background-color .4s;
   cursor: pointer;
 
-  &:hover {
+  &:disabled {
+    background-color: var(--gray--lighter);
+    border-color: var(--gray--lighter);
+    cursor: default;
+  }
+
+  &:not(:disabled):hover {
     background-color: var(--blue--darker);
   }
 }

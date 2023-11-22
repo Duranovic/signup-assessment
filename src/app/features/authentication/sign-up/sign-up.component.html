@@ -7,29 +7,67 @@
             <div class="signup-container__form">
                 <div class="signup-container__card card">
                     <h1 class="signup-container__title title">Create an account</h1>
-                    <form class="signup-container__form">
+                    <form class="signup-container__form" [formGroup]="form" (ngSubmit)="signUp()">
                         <!-- Form goes here-->
                         <div class="form-field">
                             <label for="first_name" class="form-field__label">First name</label>
-                            <input type="text" id="first_name" class="form-field__input">
+                            <input type="text" id="first_name" class="form-field__input" formControlName="firstName">
+                            <div class="form-field__errors" *ngIf="form.get('firstName')?.touched">
+                                <label class="form-field__error" for="first_name" *ngIf="form.get('firstName')?.errors?.['required']">Please enter your first name.</label>
+                            </div>
                         </div>
 
                         <div class="form-field">
                             <label for="last_name" class="form-field__label">Last name</label>
-                            <input type="text" id="last_name" class="form-field__input">
+                            <input type="text" id="last_name" class="form-field__input" [class.form-field__input--error]="form.get('lastName')?.touched && form.get('lastName')?.errors" formControlName="lastName">
+                            <div class="form-field__errors" *ngIf="form.get('lastName')?.touched">
+                                <label class="form-field__error" for="last_name" *ngIf="form.get('lastName')?.errors?.['required']">Please enter your last name.</label>
+                            </div>
                         </div>
 
                         <div class="form-field">
                             <label for="email" class="form-field__label">Email</label>
-                            <input type="email" id="email" class="form-field__input">
+                            <input type="email" id="email" class="form-field__input" [class.form-field__input--error]="form.get('email')?.touched && form.get('email')?.errors" formControlName="email">
+                            <div class="form-field__errors" *ngIf="form.get('email')?.touched">
+                                <label class="form-field__error" for="last_name" *ngIf="form.get('email')?.errors?.['required']">Please enter your email.</label>
+                                <label class="form-field__error" for="last_name" *ngIf="form.get('email')?.errors?.['pattern']">That's an invalid email.</label>
+                            </div>
                         </div>
 
                         <div class="form-field">
                             <label for="password" class="form-field__label">Password</label>
-                            <input type="password" id="password" class="form-field__input">
+                            <input type="password" id="password" class="form-field__input" [class.form-field__input--error]="form.get('password')?.touched && form.get('password')?.errors" formControlName="password">
+                            <div class="form-field__errors" *ngIf="form.get('password')?.touched">
+                                <label class="form-field__error" for="password" *ngIf="form.get('password')?.errors?.['required']">Please enter your password.</label>
+
+                                <ng-container *ngIf="form.get('password')?.status === 'INVALID' && !form.get('password')?.errors?.['required']">
+                                    <label class="form-field__error" for="password">That's an invalid password.</label>
+                                    <div class="form-field__error-description">
+                                        <strong>Create password that: </strong>
+                                        <ul>
+                                            <li [class.error]="form.get('password')?.errors?.['minlength']">
+                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
+                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
+                                                contains at least 8 characters.
+                                            </li>
+                                            <li [class.error]="form.get('password')?.errors?.['pattern']">
+                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
+                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
+                                                contains both lower (a-z) and upper case letters (A-Z)
+                                            </li>
+                                            <li [class.error]="form.get('password')?.errors?.['noFirstNameLastName']">
+                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
+                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
+                                                does not contain your first name and your last name.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </ng-container>
+
+                            </div>
                         </div>
                         <div class="signup-container__button-container">
-                            <button class="button">Continue</button>
+                            <button [disabled]="form.status === 'INVALID'" class="button">Continue</button>
                         </div>
                     </form>
 
