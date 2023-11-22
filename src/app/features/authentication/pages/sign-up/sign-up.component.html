@@ -67,12 +67,12 @@
                             </div>
                         </div>
                         <div class="signup-container__button-container">
-                            <button [disabled]="form.status === 'INVALID'" class="button">Continue</button>
+                            <button [disabled]="form.status === 'INVALID'" class="button" [class.button--loading]="loading">Continue</button>
                         </div>
                     </form>
 
                     <p class="signup-container__sign-in">
-                        Already have an account? <a href="#">Sign in</a>
+                        Already have an account? <a routerLink="/sign-in">Sign in</a>
                     </p>
                 </div>
             </div>

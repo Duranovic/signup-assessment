@@ -1,14 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {EMAIL_PATTERN} from "../constants/validator.constant";
+import {EMAIL_PATTERN} from "../../constants/validator.constant";
+import {SignupService} from "../../services/signup.service";
+import {Router} from "@angular/router";
+import {UserResponse} from "../../models/user.model";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'sign-up-assessment-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   form!: FormGroup;
+  loading: boolean = false;
+  subscription: Subscription = new Subscription();
+
+  constructor(private readonly signupService: SignupService, private router: Router) {
+  }
 
   /**
    * Initializes the sign-up form.
@@ -35,6 +44,7 @@ export class SignUpComponent implements OnInit {
    *
    * @returns The value of the lastName FormControl, or null if the FormControl does not exist.
    */
+
   get lastName() {
     return this.form?.get('lastName')?.value || null;
   }
@@ -43,7 +53,16 @@ export class SignUpComponent implements OnInit {
    * Handles the sign-up form submission.
    */
   public signUp(): void {
-    console.log(this.form);
+    const userModel = this.form.getRawValue();
+
+    this.loading = true;
+    this.subscription.add(
+      this.signupService.signUp(userModel).subscribe((user: UserResponse) => {
+        this.loading = false;
+        this.router.navigate(['/sign-in']);
+        console.log(user);
+      })
+    );
   }
 
   /**
@@ -78,5 +97,13 @@ export class SignUpComponent implements OnInit {
 
       return null;
     };
+  }
+
+  /**
+   * This method is called when the component is destroyed.
+   * It unsubscribes from the subscription so that it doesn't continue to emit values after the component is gone.
+   */
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

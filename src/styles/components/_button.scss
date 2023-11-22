@@ -1,5 +1,9 @@
 .button {
+  display: inline-block;
+  position: relative;
   font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
   color: var(--white);
   background-color: var(--blue);
   border: 2px solid var(--blue);
@@ -7,10 +11,7 @@
   padding: 3.5px 14px 4.5px;
   min-width: 72px;
   min-height: 32px;
-  font-weight: bold;
-  display: inline-block;
   transition: background-color .4s;
-  cursor: pointer;
 
   &:disabled {
     background-color: var(--gray--lighter);
@@ -20,5 +21,36 @@
 
   &:not(:disabled):hover {
     background-color: var(--blue--darker);
+  }
+
+  &--loading {
+    cursor: default;
+    pointer-events: none;
+    padding-left: 32px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 10px;
+      top: 50%;
+      transform-origin: top;
+      transform: translateY(-50%);
+      border: 3px solid var(--white);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: button-loading-spinner 1s ease infinite;
+    }
+  }
+}
+
+@keyframes button-loading-spinner {
+  from {
+    rotate: 0turn;
+  }
+
+  to {
+    rotate: 1turn;
   }
 }
