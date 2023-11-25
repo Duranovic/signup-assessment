@@ -1,20 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from "rxjs";
+import { Router } from "@angular/router";
+import { TestBed } from '@angular/core/testing';
+import { FormGroup } from "@angular/forms";
 import { SignUpComponent } from './sign-up.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { SignupService } from "../../services/signup.service";
+import { userRequestMock, userResponseMock } from "../../mocks/sign-up.mock";
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
-  let fixture: ComponentFixture<SignUpComponent>;
+  let signUpMockService = {
+    signUp: jest.spyOn(SignupService.prototype,'signUp').mockReturnValue(of(userResponseMock)),
+  };
+  let routerMock = {
+    navigate: jest.spyOn(Router.prototype,'navigate')
+  }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [SignUpComponent],
-    }).compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+          SignUpComponent,
+          { provide: SignupService, useValue: signUpMockService },
+          { provide: Router, useValue: routerMock }
+      ],
+    });
 
-    fixture = TestBed.createComponent(SignUpComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = TestBed.inject(SignUpComponent);
+    component.ngOnInit();
   });
 
 
@@ -64,10 +75,8 @@ describe('SignUpComponent', () => {
     expect(password?.hasError('noFirstNameLastName')).toBeTruthy();
   });
 
-  // Happy path
-
   it('should have a valid form', ()=>{
-    const form = component.form;
+    const form: FormGroup = component.form;
     form.setValue({
       firstName: 'Velid',
       lastName: 'Duranovic',
@@ -76,4 +85,12 @@ describe('SignUpComponent', () => {
     });
     expect(form.valid).toBeTruthy();
   })
+
+  it('should sign up the user', async () => {
+    component.form.setValue(userRequestMock);
+    component.signUp();
+    expect(component.loading).toBeFalsy();
+    expect(signUpMockService.signUp).toHaveBeenCalledWith(userRequestMock);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/sign-in']);
+  });
 });
