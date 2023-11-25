@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class SignupService {
-  private url = 'https://demo-api.now.sh/users';
+  private url: string = 'https://demo-api.now.sh/users';
 
   constructor(private http: HttpClient) {}
 
