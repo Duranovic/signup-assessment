@@ -3,7 +3,7 @@ import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, 
 import {EMAIL_PATTERN} from "../../constants/validator.constant";
 import {SignupService} from "../../services/signup.service";
 import {Router} from "@angular/router";
-import {UserResponse} from "../../models/user.model";
+import {UserRequest, UserResponse} from "../../models/user.model";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -39,12 +39,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
   get firstName() {
     return this.form?.get('firstName')?.value || null;
   }
+
   /**
    * Gets the value of the lastName FormControl.
    *
    * @returns The value of the lastName FormControl, or null if the FormControl does not exist.
    */
-
   get lastName() {
     return this.form?.get('lastName')?.value || null;
   }
@@ -53,12 +53,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
    * Handles the sign-up form submission.
    */
   public signUp(): void {
-    const userModel = this.form.getRawValue();
+    const userModel: UserRequest = this.form.getRawValue();
 
     this.loading = true;
     this.subscription.add(
       this.signupService.signUp(userModel).subscribe((user: UserResponse) => {
         this.loading = false;
+        /* We could probably introduce some kind of toaster to show a message that account has been created and
+         then navigate to the sign in page.
+         */
         this.router.navigate(['/sign-in']);
         console.log(user);
       })
