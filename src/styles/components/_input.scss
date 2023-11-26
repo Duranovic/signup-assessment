@@ -29,32 +29,37 @@
         font-size: 12px;
         line-height: 1.5;
         padding-left: 22px;
-        color: var(--green);
         position: relative;
         margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-35%);
+          width: 9px;
+          height: 9px;
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
 
         &.error {
           color: var(--red);
 
-          .error-icon {
-            display: block;
-          }
-
-          .check-icon {
-            display: none;
+          &::before {
+            background-image: url("/assets/images/error.svg");
           }
         }
 
-        // check | error icon
-        img {
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-        }
+        &.success {
+          color: var(--green);
 
-        .error-icon {
-          display: none;
+          &::before {
+            background-image: url("/assets/images/check.svg");
+          }
         }
       }
     }

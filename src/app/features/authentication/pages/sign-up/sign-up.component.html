@@ -45,20 +45,14 @@
                                     <div class="form-field__error-description" data-testid="passwordValidationMessage">
                                         <strong>Create password that: </strong>
                                         <ul>
-                                            <li [class.error]="form.get('password')?.errors?.['minlength']" data-testid="passwordLessCharacters">
-                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
-                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
-                                                contains at least 8 characters.
+                                            <li [ngClass]="form.get('password')?.errors?.['minlength'] ? 'error': 'success'" data-testid="passwordLessCharacters">
+                                               <span>contains at least 8 characters.</span>
                                             </li>
-                                            <li [class.error]="form.get('password')?.errors?.['pattern']" data-testid="passwordPattern">
-                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
-                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
-                                                contains both lower (a-z) and upper case letters (A-Z)
+                                            <li [ngClass]="form.get('password')?.errors?.['pattern'] ? 'error': 'success'" data-testid="passwordPattern">
+                                                <span>contains both lower (a-z) and upper case letters (A-Z)</span>
                                             </li>
-                                            <li [class.error]="form.get('password')?.errors?.['noFirstNameLastName']" data-testid="passwordNoFirstNameLastName">
-                                                <img [ngSrc]="'assets/images/check.svg'" width="8" height="8" alt="Check icon" class="check-icon">
-                                                <img [ngSrc]="'assets/images/error.svg'" width="8" height="8" alt="Error icon" class="error-icon">
-                                                does not contain your first name and your last name.
+                                            <li [ngClass]="form.get('password')?.errors?.['noFirstNameLastName'] ? 'error': 'success'" data-testid="passwordNoFirstNameLastName">
+                                                <span>does not contain your first name and your last name.</span>
                                             </li>
                                         </ul>
                                     </div>
