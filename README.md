@@ -1,6 +1,12 @@
 # SignUpAssessment
 Link to the deployed website 🚀: https://signup-assessment.vercel.app
 
+## Screenshots
+<img width="1679" alt="image" src="https://github.com/Duranovic/signup-assessment/assets/32494609/10ffbb2c-c072-4431-921a-8a6fcd5c9ee8">
+<img width="1680" alt="image" src="https://github.com/Duranovic/signup-assessment/assets/32494609/9e7c0b79-ad86-47aa-9439-f55cea7c19ef">
+
+<br><br>
+
 ## Prerequisite
 Install node version: `v18.18.2`. <br> Any version greater than `v16.14.2` should work just fine but our recommendation is to stick with the `v18.8.2`.
 
