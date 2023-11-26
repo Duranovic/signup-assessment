@@ -27,7 +27,7 @@ export default defineConfig({
   webServer: {
     command: 'npx nx serve sign-up-assessment',
     url: 'http://localhost:4200',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !process.env['CI'],
     cwd: workspaceRoot,
   },
 });
